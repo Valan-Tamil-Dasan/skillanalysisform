@@ -8,35 +8,10 @@ const navigation = [
     icon: "bi bi-speedometer2",
   },
   {
-    title: "Add Books",
-    href: "/addbooks",
-    icon: "bi bi-database-fill-add",
-  },
-  {
-    title: "Create Library Card",
+    title: "Student Data Form",
     href: "/librarycard",
     icon: "bi bi-person-vcard-fill",
-  },
-  {
-    title: "Card Members",
-    href: "/cardmembers",
-    icon: "bi bi-person-video2",
-  },
-  {
-    title: "Give Rent",
-    href: "/rentbook",
-    icon: "bi bi-bag-fill",
-  },
-  {
-    title: "Rent Database",
-    href: "/rentdb",
-    icon: "bi bi-clipboard2-data-fill",
-  },
-  {
-    title: "Admin Profile",
-    href: "/myprofile",
-    icon: "bi bi-people",
-  },
+  }
 ];
 
 const Sidebar = () => {

@@ -8,9 +8,9 @@ const FullLayout = () => {
     <main>
       <Header />
       <div className="pageWrapper d-lg-flex">
-        <aside className="sidebarArea shadow" id="sidebarArea">
+        {/* <aside className="sidebarArea shadow" id="sidebarArea">
           <Sidebar />
-        </aside>
+        </aside> */}
         <div className="contentArea">
           <Container className="p-4" fluid>
             <Outlet />

@@ -23,11 +23,11 @@ const Header = () => {
   }
   return (
     <Navbar color="white" light expand="md" className="fix-header">
-      <div className="d-flex align-items-center justify-content-between w-100">
+      <div className="d-flex align-items-center justify-content-center w-100">
         <div className="d-flex align-items-center">
           <div className="d-lg-block d-none me-5 pe-3">
-            <div className="d-flex align-items-center justify-content-center">
-              <h3 style={{ fontFamily: 'Poppins', fontWeight: 500 }} className="m-3">Library Management</h3>
+            <div className="d-flex align-items-center justify-content-center ">
+              <h3 style={{  fontFamily: 'Poppins', fontWeight: 500 }} className="m-3">Skill Analysis Data Form</h3>
               <img src={logo} className="img-fluid" style={{ width: '35px' }} alt="logo" />
             </div>
           </div>
@@ -39,28 +39,13 @@ const Header = () => {
             <i className="bi bi-list"></i>
           </Button>
           <div className="d-lg-none d-flex align-items-center justify-content-center m-2">
-            <h6 style={{ fontFamily: 'Poppins', fontWeight: 500 }} className="m-1">Library Management</h6>
+            <h6 style={{ fontFamily: 'Poppins', fontWeight: 500 }} className="m-1">Skill Analysis Data Form</h6>
             <NavbarBrand>
               <img src={logo} className="img-fluid d-lg-none m-1" style={{ width: '35px' }} alt="logo" />
             </NavbarBrand>
           </div>
         </div>
-        <div className="hstack gap-2">
-          <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-            <DropdownToggle color="transparent">
-              <img
-                src={user1}
-                alt="profile"
-                className="rounded-circle"
-                width="30"
-              />
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem header>Info</DropdownItem>
-              <DropdownItem onClick={myprofile}>My Profile</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+       
       </div>
     </Navbar>
   );
