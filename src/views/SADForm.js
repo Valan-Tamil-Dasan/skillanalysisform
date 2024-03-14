@@ -172,24 +172,12 @@ const SADForm = () => {
               </FormGroup>
               <FormGroup>
                 <Label
-                  for="email"
-                  style={{ fontFamily: "Poppins", fontWeight: 400 }}
-                >
-                  College Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="Enter College Email"
-                  type="email"
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label
                   for="Name"
                   style={{ fontFamily: "Poppins", fontWeight: 400 }}
-                ></Label>
+                >
+                  Codeforces ID
+
+                </Label>
                 <div className="d-flex align-items-center">
                   <Input
                     id="Name"
@@ -222,7 +210,7 @@ const SADForm = () => {
                   for="card_no"
                   style={{ fontFamily: "Poppins", fontWeight: 400 }}
                 >
-                  Unique Library Card Number
+                Codechef ID
                 </Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -253,8 +241,78 @@ const SADForm = () => {
                   </small>
                 )}
               </FormGroup>
-
-              
+              <FormGroup>
+                <Label
+                  for="card_no"
+                  style={{ fontFamily: "Poppins", fontWeight: 400 }}
+                >
+                Leetcode ID
+                </Label>
+                <div className="d-flex align-items-center">
+                  <Input
+                    id="card_no"
+                    name="card_no"
+                    placeholder="Enter Unique Card Number"
+                    type="text"
+                    onChange={(e) =>
+                      setData({ ...data, card_no: e.target.value })
+                    }
+                  />
+                  <Button
+                    color="primary"
+                    className="m-2"
+                    onClick={checkUniqueness}
+                  >
+                    Check
+                  </Button>
+                </div>
+                {uniqueMessage && uniqueMessage == "unique" && (
+                  <small className="text-success m-1">
+                    Card number is unique
+                  </small>
+                )}
+                {uniqueMessage && uniqueMessage == "not-unique" && (
+                  <small className="text-warning">
+                    Card Number is not unique
+                  </small>
+                )}
+              </FormGroup>
+              <FormGroup>
+                <Label
+                  for="card_no"
+                  style={{ fontFamily: "Poppins", fontWeight: 400 }}
+                >
+                Github ID
+                </Label>
+                <div className="d-flex align-items-center">
+                  <Input
+                    id="card_no"
+                    name="card_no"
+                    placeholder="Enter Unique Card Number"
+                    type="text"
+                    onChange={(e) =>
+                      setData({ ...data, card_no: e.target.value })
+                    }
+                  />
+                  <Button
+                    color="primary"
+                    className="m-2"
+                    onClick={checkUniqueness}
+                  >
+                    Check
+                  </Button>
+                </div>
+                {uniqueMessage && uniqueMessage == "unique" && (
+                  <small className="text-success m-1">
+                    Card number is unique
+                  </small>
+                )}
+                {uniqueMessage && uniqueMessage == "not-unique" && (
+                  <small className="text-warning">
+                    Card Number is not unique
+                  </small>
+                )}
+              </FormGroup>
               <FormGroup>
                 <Label
                   for="email"
@@ -273,7 +331,7 @@ const SADForm = () => {
                     if (!inputValue) {
                       setEmailMsg("");
                     } else if (!validateEmail(inputValue)) {
-                      setEmailMsg("Enter a valid email ID");
+                      setEmailMsg("Enter college mail ID");
                     } else {
                       setEmailMsg("");
                     }
@@ -303,23 +361,7 @@ const SADForm = () => {
                 />
               </FormGroup>
               
-              <FormGroup>
-                <Label
-                  for="aadhar_no"
-                  style={{ fontFamily: "Poppins", fontWeight: 400 }}
-                >
-                  Aadhar Number
-                </Label>
-                <Input
-                  id="aadhar_no"
-                  name="aadhar_no"
-                  placeholder="Enter Aadhar of Person"
-                  type="text"
-                  onChange={(e) =>
-                    setData({ ...data, aadhar_no: e.target.value })
-                  }
-                />
-              </FormGroup>
+        
               <Button color="primary" onClick={addCard}>
                 Submit
               </Button>
