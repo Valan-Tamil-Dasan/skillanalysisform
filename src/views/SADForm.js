@@ -191,7 +191,7 @@ const SADForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000//fetch_leetcode",
+        "https://dataform-dqz1.onrender.com/fetch_leetcode",
         {
           username: username,
         }
@@ -228,7 +228,7 @@ const SADForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000//fetch_codechef",
+        "https://dataform-dqz1.onrender.com/fetch_codechef",
         {
           username: username,
         }
@@ -270,7 +270,7 @@ const SADForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000//fetch_codeforces",
+        "https://dataform-dqz1.onrender.com/fetch_codeforces",
         {
           username: username,
         }
@@ -308,7 +308,7 @@ const SADForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000//fetch_github",
+        "https://dataform-dqz1.onrender.com/fetch_github",
         {
           username: username,
         }
