@@ -31,8 +31,6 @@ const SADForm = () => {
     leetcodeUsername: "",
     githubUsername: "",
     email: "",
-    sec : '',
-    dept :'',
     contact: "",
   });
 
@@ -62,7 +60,7 @@ const SADForm = () => {
     currentRating: "",
     maxRating: "",
     currentRank: "",
-    maxRank : '',
+    maxRank: "",
   });
 
   const [githubData, setgithubData] = useState({
@@ -71,11 +69,10 @@ const SADForm = () => {
     numberOfRepos: "",
     followers: "",
     following: "",
-
   });
 
-  const [uniqueMessage, setUniqueMessage] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
+  const [contactMsg, setContactMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -124,42 +121,107 @@ const SADForm = () => {
     },
   };
 
-  const addCard = async () => {
-    if (uniqueMessage == "not-unique") {
-      toast.error("Enter Unique Card Number");
-    } else {
-      const { card_no, name, email, address, contact, aadhar_no, dom } = data;
-      if (card_no.length !== 12) {
-        toast.error("Card number should be at length of 12");
-      } else {
-        try {
-          const res = await axios.post("/addCard", {
-            card_no,
-            name,
-            email,
-            address,
-            contact,
-            aadhar_no,
-            dom,
-          });
-          toast.success("Card Created");
-          Swal.fire({
-            title: "Card Creation Successfull",
-            text: "New Library Card has been Created !",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then((result) => {
-            navigate("/cardmembers");
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        } catch (error) {
-          console.log(error);
-        }
+  const sendData = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    console.log({
+      Name: data.name,
+      Department: data.department,
+      Section: data.section,
+      Year: data.year,
+      Reg_no: data.reg_no,
+      Domain: data.domain,
+      CodeChefUsername: data.codeChefUsername,
+      CodeForcesUsername: data.codeForcesUsername,
+      LeetcodeUsername: data.leetcodeUsername,
+      GithubUsername: data.githubUsername,
+      Email: data.email,
+      Contact: data.contact,
+    });
+    formData.append("Name", data.name);
+    formData.append("Department", data.department);
+    formData.append("Section", data.section);
+    formData.append("Year", data.year);
+    formData.append("Reg_no", data.reg_no);
+    formData.append("Domain", data.domain);
+    formData.append("CodeChefUsername", data.codeChefUsername);
+    formData.append("CodeForcesUsername", data.codeForcesUsername);
+    formData.append("LeetcodeUsername", data.leetcodeUsername);
+    formData.append("GithubUsername", data.githubUsername);
+    formData.append("Email", data.email);
+    formData.append("Contact", data.contact);
+    fetch(
+      "https://script.google.com/macros/s/AKfycbwHKDgs39Xzuc3MmyVKFrtCl5fVe3NxWzoI6UfpXAXYT3tb_V5OzSsBbsOtVMv8_XxH/exec",
+      {
+        method: "POST",
+        body: formData,
       }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    if (!data.name) {
+      toast.error("Kindly enter your name");
+    } else if (!data.reg_no) {
+      toast.error("Kindly enter your register number");
+    } else if (!data.domain) {
+      toast.error("Kindly enter your domain");
+    } else if (!data.leetcodeUsername) {
+      toast.error("Kindly enter your leetcode username");
+    } else if (
+      !leetcodeData.found ||
+      leetcodeData.username !== data.leetcodeUsername
+    ) {
+      toast.error("Kindly verify your leetcode username");
+    } else if (!data.codeChefUsername) {
+      toast.error("Kindly enter your codechef username");
+    } else if (
+      !codechefData.found ||
+      codechefData.username !== data.codeChefUsername
+    ) {
+      toast.error("Kindly verify your codechef username");
+    } else if (!data.codeForcesUsername) {
+      toast.error("Kindly enter your codeforces username");
+    } else if (
+      !codeforcesData.found ||
+      codeforcesData.username !== data.codeForcesUsername
+    ) {
+      toast.error("Kindly verify your codeforces username");
+    } else if (!data.githubUsername) {
+      toast.error("Kindly enter your github username");
+    } else if (
+      !githubData.found ||
+      githubData.username !== data.githubUsername
+    ) {
+      toast.error("Kindly verify your github username");
+    } else if (!data.email) {
+      toast.error("Kindly enter your email");
+    } else if (!validateEmail(data.email)) {
+      toast.error("Kindly enter correct Email-ID");
+    } else if (!data.year) {
+      toast.error("Kindly enter your year");
+    } else if (!data.department) {
+      toast.error("Kindly enter your department");
+    } else if (!data.section) {
+      toast.error("Kindly enter your section");
+    } else if (!data.contact) {
+      toast.error("Kindly enter your contact");
+    } else if (!validateMobileNumber(data.contact)) {
+      toast.error("Kindly enter correct contact");
+    } else {
+      toast.success("Success");
+      sendData(e);
     }
   };
+
   const validateMobileNumber = (inputValue) => {
     if (!/^\d+$/.test(inputValue)) {
       return false;
@@ -173,17 +235,6 @@ const SADForm = () => {
   const validateEmail = (email) => {
     const emailRegex = /\.[^\s@]{4,}@citchennai\.net$/;
     return emailRegex.test(email);
-  };
-  const checkUniqueness = async () => {
-    const card_no = data.card_no;
-    try {
-      const res = await axios.post("/checkUniqueness", {
-        card_no: card_no,
-      });
-      setUniqueMessage(res.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const fetchLeetcode = async () => {
@@ -302,7 +353,6 @@ const SADForm = () => {
     }
   };
 
-
   const fetchgithub = async () => {
     const username = data.githubUsername;
 
@@ -312,10 +362,8 @@ const SADForm = () => {
         {
           username: username,
         }
-
-
       );
-      
+
       if (response.data.message[1]) {
         const fetchedData = {
           found: 1,
@@ -396,16 +444,20 @@ const SADForm = () => {
                   type="select"
                   onChange={(e) => setData({ ...data, domain: e.target.value })}
                 >
-                  <option>Select Domain</option>
-                  <option>App Development</option>
-                  <option>SDE</option>
-                  <option>Full Stack Development</option>
-                  <option>Machine Learning</option>
-                  <option>Cloud</option>
-                  <option>Cybersecurity</option>
-                  <option>IoT</option>
-                  <option>VLSI</option>
-                  <option>Data Analytics and Data Science</option>
+                  <option value="">Select Domain</option>
+                  <option value="App Development">App Development</option>
+                  <option value="SDE">SDE</option>
+                  <option value="Full Stack Development">
+                    Full Stack Development
+                  </option>
+                  <option value="Machine Learning">Machine Learning</option>
+                  <option value="Cloud">Cloud</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="IoT">IoT</option>
+                  <option value="VLSI">VLSI</option>
+                  <option value="Data Analytics and Data Science">
+                    Data Analytics and Data Science
+                  </option>
                 </Input>
               </FormGroup>
 
@@ -436,7 +488,7 @@ const SADForm = () => {
                 </div>
 
                 {leetcodeData.found === 1 ? (
-                  <small className=" mb-4 " style={{ color: "green" }}>
+                  <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
                     {leetcodeData.username} ,{" "}
                     <b style={{ color: "black" }}> Problems solved </b>:{" "}
@@ -452,7 +504,9 @@ const SADForm = () => {
                     </span>
                   </small>
                 ) : leetcodeData.found === 0 ? null : (
-                  <p style={{ color: "red" }}>Invalid Credentials</p>
+                  <p className=" mt-2 " style={{ color: "red" }}>
+                    Invalid Credentials
+                  </p>
                 )}
               </FormGroup>
 
@@ -483,7 +537,7 @@ const SADForm = () => {
                 </div>
 
                 {codechefData.found === 1 ? (
-                  <small className=" mb-4 " style={{ color: "green" }}>
+                  <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
                     {codechefData.username} ,{" "}
                     <b style={{ color: "black" }}>Current Rating</b>:{" "}
@@ -499,7 +553,9 @@ const SADForm = () => {
                     </span>
                   </small>
                 ) : codechefData.found === 0 ? null : (
-                  <p style={{ color: "red" }}>Invalid Credentials</p>
+                  <p className=" mt-2 " style={{ color: "red" }}>
+                    Invalid Credentials
+                  </p>
                 )}
               </FormGroup>
               <FormGroup>
@@ -529,7 +585,7 @@ const SADForm = () => {
                 </div>
 
                 {codeforcesData.found === 1 ? (
-                  <small className=" mb-4 " style={{ color: "green" }}>
+                  <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
                     {codeforcesData.username} ,{" "}
                     <b style={{ color: "black" }}> Current Rating </b>:{" "}
@@ -545,7 +601,9 @@ const SADForm = () => {
                     </span>
                   </small>
                 ) : codeforcesData.found === 0 ? null : (
-                  <p style={{ color: "red" }}>Invalid Credentials</p>
+                  <p className=" mt-2 " style={{ color: "red" }}>
+                    Invalid Credentials
+                  </p>
                 )}
               </FormGroup>
               <FormGroup>
@@ -565,32 +623,32 @@ const SADForm = () => {
                       setData({ ...data, githubUsername: e.target.value })
                     }
                   />
-                  <Button
-                    color="primary"
-                    className="m-2"
-                    onClick={fetchgithub}
-                  >
+                  <Button color="primary" className="m-2" onClick={fetchgithub}>
                     Verify
                   </Button>
                 </div>
 
                 {githubData.found === 1 ? (
-                  <small className=" mb-4 " style={{ color: "green" }}>
+                  <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
                     {githubData.username} ,{" "}
-                    <b style={{ color: "black" }}> Number of public repositories </b>:{" "}
-                    {githubData.numberOfRepos} ,{" "}
+                    <b style={{ color: "black" }}>
+                      {" "}
+                      Number of public repositories{" "}
+                    </b>
+                    : {githubData.numberOfRepos} ,{" "}
                     <b style={{ color: "black" }}> Number of Followers</b>{" "}
                     {githubData.followers} ,{" "}
                     <b style={{ color: "black" }}>Following </b>:{" "}
-                    {githubData.following} ,{" "}
-                     &nbsp;{" "}
+                    {githubData.following} , &nbsp;{" "}
                     <span style={{ color: "black" }}>
                       (username shown here will be submitted)
                     </span>
                   </small>
                 ) : githubData.found === 0 ? null : (
-                  <p style={{ color: "red" }}>Invalid Credentials</p>
+                  <p className=" mt-2 " style={{ color: "red" }}>
+                    Invalid Credentials
+                  </p>
                 )}
               </FormGroup>
               <FormGroup>
@@ -619,7 +677,7 @@ const SADForm = () => {
                 />
               </FormGroup>
               {emailMsg && (
-                <small className=" mb-4 " style={{ color: "red" }}>
+                <small className=" mb-4" style={{ color: "red" }}>
                   {emailMsg}
                 </small>
               )}
@@ -627,6 +685,7 @@ const SADForm = () => {
                 <Label
                   for="emp_year"
                   style={{ fontFamily: "Poppins", fontWeight: 400 }}
+                  className=" mt-2 "
                 >
                   Year
                 </Label>
@@ -654,7 +713,9 @@ const SADForm = () => {
                     id="dept"
                     name="dept"
                     type="select"
-                    onChange={(e) => setData({ ...data, dept: e.target.value })}
+                    onChange={(e) =>
+                      setData({ ...data, department: e.target.value })
+                    }
                   >
                     <option value="">Select Department</option>
                     {Object.keys(details[data.year]).map((dept, index) => (
@@ -663,7 +724,7 @@ const SADForm = () => {
                   </Input>
                 </FormGroup>
               )}
-              {data.dept !== "" && data.year !== "" && (
+              {data.department !== "" && data.year !== "" && (
                 <FormGroup>
                   <Label
                     for="sec"
@@ -675,12 +736,16 @@ const SADForm = () => {
                     id="sec"
                     name="sec"
                     type="select"
-                    onChange={(e) => setData({ ...data, sec: e.target.value })}
+                    onChange={(e) =>
+                      setData({ ...data, section: e.target.value })
+                    }
                   >
                     <option value="">Select Section</option>
-                    {details[data.year][data.dept].map((section, index) => (
-                      <option value={section}>{section}</option>
-                    ))}
+                    {details[data.year][data.department].map(
+                      (section, index) => (
+                        <option value={section}>{section}</option>
+                      )
+                    )}
                   </Input>
                 </FormGroup>
               )}
@@ -696,13 +761,25 @@ const SADForm = () => {
                   name="contact"
                   placeholder="Enter Person Contact"
                   type="text"
-                  onChange={(e) =>
-                    setData({ ...data, contact: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    setData({ ...data, contact: inputValue });
+                    if (!inputValue) {
+                      setContactMsg("");
+                    } else if (!validateMobileNumber(inputValue)) {
+                      setContactMsg("Enter correct contact");
+                    } else {
+                      setContactMsg("");
+                    }
+                  }}
                 />
               </FormGroup>
-              {/* while submitting submit the details in fetched data not the value from input tab */}
-              <Button color="primary" onClick={addCard}>
+              {contactMsg && (
+                <small className=" mb-4 d-block " style={{ color: "red" }}>
+                  {contactMsg}
+                </small>
+              )}
+              <Button color="primary" onClick={submitForm}>
                 Submit
               </Button>
             </Form>
