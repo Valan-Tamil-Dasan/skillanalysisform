@@ -17,6 +17,7 @@ import {
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
+import Loader from '../layouts/loader/Loader'
 
 const SADForm = () => {
   const [data, setData] = useState({
@@ -41,7 +42,14 @@ const SADForm = () => {
     globalRank: "",
     contestRating: "",
     topPercent: "",
+    loader : false
   });
+  const [submitted , setSubmitted] = useState(false);
+
+  const [leetcodeLoader , setLeetcodeLoader] = useState(false);
+  const [codechefLoader , setcodechefLoader] = useState(false);
+  const [codeforcesLoader , setcodeforcesLoader] = useState(false);
+  const [githubLoader , setgithubLoader] = useState(false);
 
   const [codechefData, setcodechefData] = useState({
     found: 0,
@@ -124,20 +132,6 @@ const SADForm = () => {
   const sendData = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    console.log({
-      Name: data.name,
-      Department: data.department,
-      Section: data.section,
-      Year: data.year,
-      Reg_no: data.reg_no,
-      Domain: data.domain,
-      CodeChefUsername: data.codeChefUsername,
-      CodeForcesUsername: data.codeForcesUsername,
-      LeetcodeUsername: data.leetcodeUsername,
-      GithubUsername: data.githubUsername,
-      Email: data.email,
-      Contact: data.contact,
-    });
     formData.append("Name", data.name);
     formData.append("Department", data.department);
     formData.append("Section", data.section);
@@ -157,12 +151,15 @@ const SADForm = () => {
         body: formData,
       }
     )
-      .then((res) => res.json())
+    
       .then((data) => {
-        console.log(data);
+        toast.success("Success");
+        setSubmitted(true);
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Unsuccessfull submission");
+       
       });
   };
 
@@ -217,8 +214,9 @@ const SADForm = () => {
     } else if (!validateMobileNumber(data.contact)) {
       toast.error("Kindly enter correct contact");
     } else {
-      toast.success("Success");
       sendData(e);
+      
+      
     }
   };
 
@@ -239,6 +237,7 @@ const SADForm = () => {
 
   const fetchLeetcode = async () => {
     const username = data.leetcodeUsername;
+    setLeetcodeLoader(true);
 
     try {
       const response = await axios.post(
@@ -258,16 +257,18 @@ const SADForm = () => {
           topPercent: response.data.message[0]["Top%"],
         };
         setLeetcodeData(fetchedData);
+        setLeetcodeLoader(false);
       } else {
         const fetchedData = {
           found: -1,
-          username: username,
+          username: "",
           problemsSolved: "",
           globalRank: "",
           contestRating: "",
           topPercent: "",
         };
         setLeetcodeData(fetchedData);
+        setLeetcodeLoader(false);
       }
     } catch (error) {
       console.log(error);
@@ -276,7 +277,7 @@ const SADForm = () => {
 
   const fetchCodechef = async () => {
     const username = data.codeChefUsername;
-
+    setcodechefLoader(true);
     try {
       const response = await axios.post(
         "https://dataform-dqz1.onrender.com/fetch_codechef",
@@ -298,6 +299,7 @@ const SADForm = () => {
         };
 
         setcodechefData(fetchedData);
+        setcodechefLoader(false);
       } else {
         const fetchedData = {
           found: -1,
@@ -310,6 +312,7 @@ const SADForm = () => {
           countryRank: "",
         };
         setcodechefData(fetchedData);
+        setcodechefLoader(false);
       }
     } catch (err) {
       console.log(err);
@@ -318,7 +321,7 @@ const SADForm = () => {
 
   const fetchCodeforces = async () => {
     const username = data.codeForcesUsername;
-
+    setcodeforcesLoader(true);
     try {
       const response = await axios.post(
         "https://dataform-dqz1.onrender.com/fetch_codeforces",
@@ -337,16 +340,18 @@ const SADForm = () => {
           maxRank: response.data.message[0]["max_rank"],
         };
         setcodeforcesData(fetchedData);
+        setcodeforcesLoader(false);
       } else {
         const fetchedData = {
           found: -1,
-          username: username,
+          username: "",
           problemsSolved: "",
           globalRank: "",
           contestRating: "",
           topPercent: "",
         };
         setcodeforcesData(fetchedData);
+        setcodeforcesLoader(false);
       }
     } catch (error) {
       console.log(error);
@@ -355,7 +360,7 @@ const SADForm = () => {
 
   const fetchgithub = async () => {
     const username = data.githubUsername;
-
+    setgithubLoader(true);
     try {
       const response = await axios.post(
         "https://dataform-dqz1.onrender.com/fetch_github",
@@ -373,15 +378,17 @@ const SADForm = () => {
           following: response.data.message[0]["following"],
         };
         setgithubData(fetchedData);
+        setgithubLoader(false);
       } else {
         const fetchedData = {
           found: -1,
-          username: username,
+          username: "",
           numberOfRepos: "",
           followers: "",
           following: "",
         };
         setgithubData(fetchedData);
+        setgithubLoader(false);
       }
     } catch (error) {
       console.log(error);
@@ -389,7 +396,14 @@ const SADForm = () => {
   };
 
   return (
-    <Row>
+    <>
+      {submitted ?  ( <CardTitle
+            tag="h5"
+            style={{ fontFamily: "Poppins", fontWeight: 600 }}
+            className="border-bottom p-3 mb-0"
+          >
+            Form submission successfull
+          </CardTitle>) : <Row>
       <Col>
         <Card>
           <CardTitle
@@ -486,7 +500,7 @@ const SADForm = () => {
                     Verify
                   </Button>
                 </div>
-
+                    {leetcodeLoader == 1 ? (<Loader/>):(null)}
                 {leetcodeData.found === 1 ? (
                   <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
@@ -509,7 +523,7 @@ const SADForm = () => {
                   </p>
                 )}
               </FormGroup>
-
+                  
               <FormGroup>
                 <Label
                   for="codechef_id"
@@ -535,7 +549,7 @@ const SADForm = () => {
                     Verify
                   </Button>
                 </div>
-
+                {codechefLoader == 1 ? (<Loader/>):(null)}
                 {codechefData.found === 1 ? (
                   <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
@@ -583,7 +597,7 @@ const SADForm = () => {
                     Verify
                   </Button>
                 </div>
-
+                {codeforcesLoader == 1 ? (<Loader/>):(null)}
                 {codeforcesData.found === 1 ? (
                   <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
@@ -627,7 +641,7 @@ const SADForm = () => {
                     Verify
                   </Button>
                 </div>
-
+                {githubLoader == 1 ? (<Loader/>):(null)}
                 {githubData.found === 1 ? (
                   <small className=" mb-2 " style={{ color: "green" }}>
                     <b style={{ color: "black" }}>Username</b> :{" "}
@@ -786,7 +800,8 @@ const SADForm = () => {
           </CardBody>
         </Card>
       </Col>
-    </Row>
+    </Row>}
+    </>
   );
 };
 
