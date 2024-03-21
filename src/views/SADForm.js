@@ -241,7 +241,7 @@ const SADForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.url}/fetch_leetcode`,
+        `https://dataform-dqz1.onrender.com/fetch_leetcode`,
         {
           username: username,
         }
@@ -280,7 +280,7 @@ const SADForm = () => {
     setcodechefLoader(true);
     try {
       const response = await axios.post(
-        `${process.env.url}/fetch_codechef`,
+        `https://dataform-dqz1.onrender.com/fetch_codechef`,
         {
           username: username,
         }
@@ -324,7 +324,7 @@ const SADForm = () => {
     setcodeforcesLoader(true);
     try {
       const response = await axios.post(
-        `${process.env.url}/fetch_codeforces`,
+        `https://dataform-dqz1.onrender.com/fetch_codeforces`,
         {
           username: username,
         }
@@ -363,7 +363,7 @@ const SADForm = () => {
     setgithubLoader(true);
     try {
       const response = await axios.post(
-        `${process.env.url}/fetch_github`,
+        `https://dataform-dqz1.onrender.com/fetch_github`,
         {
           username: username,
         }
