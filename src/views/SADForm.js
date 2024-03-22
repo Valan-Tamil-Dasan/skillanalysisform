@@ -45,6 +45,7 @@ const SADForm = () => {
     loader : false
   });
   const [submitted , setSubmitted] = useState(false);
+  const [showsubmit , setshowsubmit] = useState(true);
 
   const [leetcodeLoader , setLeetcodeLoader] = useState(false);
   const [codechefLoader , setcodechefLoader] = useState(false);
@@ -159,6 +160,7 @@ const SADForm = () => {
       .catch((error) => {
         console.log(error);
         toast.error("Unsuccessfull submission");
+        setshowsubmit(true);
        
       });
   };
@@ -215,6 +217,7 @@ const SADForm = () => {
       toast.error("Kindly enter correct contact");
     } else {
       sendData(e);
+      setshowsubmit(false);
       
       
     }
@@ -793,9 +796,11 @@ const SADForm = () => {
                   {contactMsg}
                 </small>
               )}
+              {showsubmit ? 
               <Button color="primary" onClick={submitForm}>
                 Submit
-              </Button>
+              </Button> : null
+            }
             </Form>
           </CardBody>
         </Card>
